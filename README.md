@@ -1,7 +1,11 @@
 # BESIII_HEPML
   这个包是对项目
   [https://github.com/arogozhnikov/hep_ml](https://github.com/arogozhnikov/hep_ml)
-  的改进版本，添加了xgboost模型和bin-reweight模型的支持，并支持自动优化超参数。仅供科大BESIII合作组内部交流使用。
+  的改进版本：
+  1. 添加了xgboost模型和bin-reweight模型的支持
+  2. 添加支持自动优化超参数
+  3. 添加对数据和MC进行初始加权。
+  仅供科大BESIII合作组内部交流使用。
 
 ## 1. 环境配置
 ### Python环境直接调用法（建议）
@@ -65,6 +69,39 @@ python
 ```
 
 ## 2. 程序包使用
+### 读取ROOT文件
+使用如下命令，读取root文件特定名称tree内的特定branchs
+```
+import hreweight.hroot as hroot
+
+branchs = ['pip_heli', 'pim_heli', 'piz_heli',
+           'pipm_m', 'pipz_m', 'pimz_m']
+df_data = hroot.read_tree(file_input='test_file/data.root',
+                          tree='data',
+                          branchs=branchs)
+df_mc = hroot.read_tree(file_input='test_file/mc.root',
+                        tree='data',
+                        branchs=branchs)
+print(df_data)
+print(df_mc)
+```
+### 设定可选的超参数列表
+设定自动优化的超参数集，程序包会自动寻找最优的超参数组合。这里设定的超参数备选值越多，拟合所需时间越长。
+```
+argv = {'max_depth': [0, 3, 5, 7],
+        'max_leaves': [0, 5, 10]}
+```
+### 初始化超参数优化器
+初始化超参数优化器，并输入
+```
+import hreweight.cv as cv
+
+searcher = cv.CVSearcher(argv)
+# searcher.set_data(df_data)
+searcher.set_data(df_r, weight=numpy.ones(df_r.shape[0])) # 可选对数据进行加权
+# searcher.set_data(df_mc)
+searcher.set_mc(df_m, weight=numpy.ones(df_m.shape[0])) # 可选对数据进行加权
+```
 
 
 
