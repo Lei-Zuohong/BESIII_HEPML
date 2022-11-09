@@ -98,10 +98,33 @@ import hreweight.cv as cv
 
 searcher = cv.CVSearcher(argv)
 # searcher.set_data(df_data)
-searcher.set_data(df_r, weight=numpy.ones(df_r.shape[0])) # 可选对数据进行加权
-# searcher.set_data(df_mc)
-searcher.set_mc(df_m, weight=numpy.ones(df_m.shape[0])) # 可选对数据进行加权
+searcher.set_data(df_data, weight=numpy.ones(df_r.shape[0])) # 可选对数据进行加权
+# searcher.set_mc(df_mc)
+searcher.set_mc(df_mc, weight=numpy.ones(df_m.shape[0])) # 可选对数据进行加权
 ```
+### 设定使用的模型并进行拟合
+可供选择的模型有
+1. BinsReweighter （不带误差修正的分Bin模型，不推荐使用，建议使用下面那个）
+2. EBinsReweighter （带误差修正的分Bin模型）
+3. XGBReweighter （机器学习的xgboost模型，可选超参数见[xgboost.XGBClassifier](https://xgboost.readthedocs.io/en/stable/python/python_api.html#xgboost.XGBClassifier)）
+4. GBReweighter （机器学习的gboost模型，可选超参数见[hep_ml.reweight.GBReweighter](https://arogozhnikov.github.io/hep_ml/reweight.html)）
+建立模型对象，并将模型对象输入优化器进行优化
+```
+import hreweight.reweight as reweight
+
+model = reweight.XGBReweighter(n_jobs=1)
+# model = reweight.GBReweighter(n_jobs=1)
+searcher.gridsearchcv(model, n_jobs=1)
+```
+其中第一个n_jobs代表模型计算时使用的线程数，第二个n_jobs代表参数优化使用的线程数，若服务器提交作业或者内存不足建议设为1，否则按电脑配置自行设定。
+得到优化后的模型
+```
+model = searcher.get_reweighter()
+```
+### 使用结果
+
+
+
 
 
 
