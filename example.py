@@ -28,3 +28,8 @@ searcher.gridsearchcv(model, n_jobs=1)
 model = searcher.get_reweighter()
 # 使用结果
 weight = model.predict_weights(df_mc)
+# 绘图
+hreweight.draw_distributions(df_mc[branchs], df_data[branchs],
+                             origin_weights=weight,
+                             figures=['figure/example.pdf',
+                                      'figure/example.png'])

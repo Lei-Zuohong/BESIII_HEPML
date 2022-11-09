@@ -122,6 +122,21 @@ searcher.gridsearchcv(model, n_jobs=1)
 model = searcher.get_reweighter()
 ```
 ### 使用结果
+使用如下命令，得到对应df对象的权重列表
+```
+weight = model.predict_weights(df_mc)
+```
+随后可以自行使用该权重结果绘图或者计算效率
+```
+hreweight.draw_distributions(df_mc[branchs], df_data[branchs],
+                             origin_weights=weight,
+                             figures=['figure/example.pdf',
+                                      'figure/example.png'])
+weight1 = model.predict_weights(df1)
+weight2 = model.predict_weights(df2)
+efficiency = numpy.sum(weight1) / numpy.sum(weight2)
+```
+
 
 
 
