@@ -1,2 +1,5 @@
 # BESIII_HEPML
-A machine-learning package to do reweight in high energy physics.
+
+这个包是对项目
+[https://github.com/arogozhnikov/hep_ml](https://github.com/arogozhnikov/hep_ml)
+的改进版本，添加了xgboost模型和bin-reweight模型的支持。
