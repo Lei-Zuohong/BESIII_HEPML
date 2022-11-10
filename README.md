@@ -6,7 +6,7 @@
   2. 添加支持自动优化超参数
   3. 添加对数据和MC进行初始加权。
   
-  仅供科大BESIII合作组内部交流使用。
+  仅供科大BESIII合作组内部交流使用。(Contact: leizuoho@mail.ustc.edu.cn)
 
 ## 1. 环境配置
 ### Python环境直接调用法（建议）
