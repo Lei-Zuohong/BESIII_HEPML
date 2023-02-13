@@ -117,8 +117,10 @@ import hreweight.reweight as reweight
 model = reweight.XGBReweighter(n_jobs=1)
 # model = reweight.GBReweighter(n_jobs=1)
 searcher.gridsearchcv(model, n_jobs=1)
+# searcher.gridsearchcv(model, n_jobs=1, cv=5)
 ```
 其中第一个n_jobs代表模型计算时使用的线程数，第二个n_jobs代表参数优化使用的线程数，若服务器提交作业或者内存不足建议设为1，否则按电脑配置自行设定。
+可选参数cv代表crossvalidation的folder深度，默认数值为5，增大此数值会增加运算时间，增加结果稳定度。数值越大所需的支撑统计量越大。
 得到优化后的模型
 ```
 model = searcher.get_reweighter()
