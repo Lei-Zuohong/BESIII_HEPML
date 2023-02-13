@@ -27,7 +27,7 @@ class CVSearcher:
         if(not weight is None):
             self.weight_m = weight
 
-    def gridsearchcv(self, model, n_jobs=-1):
+    def gridsearchcv(self, model, n_jobs=-1, cv=None):
         # 生成输入数据
         X = pandas.concat([self.df_m, self.df_r]).reset_index(drop=True)
         y = numpy.append(numpy.ones(self.df_m.shape[0]), numpy.zeros(self.df_r.shape[0]))
@@ -50,7 +50,8 @@ class CVSearcher:
         self.reweighter = copy.deepcopy(model)
         searcher = sklearn.model_selection.GridSearchCV(estimator=self.reweighter,
                                                         param_grid=self.argv,
-                                                        n_jobs=n_jobs)
+                                                        n_jobs=n_jobs,
+                                                        cv=cv)
         searcher.fit(self.X, self.yw)
         self.searcher = searcher
         return searcher
@@ -86,4 +87,3 @@ class CVSearcher:
         self.reweighter.set_params(**self.searcher.best_params_)
         self.reweighter.fit(self.X, self.yw)
         return self.reweighter
-    
