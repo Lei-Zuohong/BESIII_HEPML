@@ -8,7 +8,12 @@ def read_tree(file_input='',  # 将一个root:tree转换为pandas格式
               branchs=[]):
     with uproot.open(file_input) as tfile:
         ttree = tfile[tree]
-        output = pandas.DataFrame(ttree.arrays(library='np'))
+        tdict = ttree.arrays(library='np')
         if(len(branchs) > 0):
-            output = output[branchs]
+            ndict = {}
+            for branch in branchs:
+                ndict[branch] = tdict[branch]
+            output = pandas.DataFrame(ndict)
+        else:
+            output = pandas.DataFrame(tdict)
     return output
